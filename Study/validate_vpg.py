@@ -43,13 +43,22 @@ def select_policy(state):
     policy.saved_log_probs.append(m.log_prob(action))
     return action.item()
 
-state,_ = env.reset()
-ep_reward = 0
-for t in range(1, 10000):
-    action = select_policy(state)
-    state, reward, done, _, _ = env.step(action)
-    env.render()
-    policy.rewards.append(reward)
-    ep_reward += reward
-    if done:
-        break
+while True:
+    state,_ = env.reset()
+    for t in range(1, 10000):
+        action = select_policy(state)
+        state, reward, done, _, _ = env.step(action)
+        env.render()
+        if done:
+            break
+
+# state,_ = env.reset()
+# ep_reward = 0
+# for t in range(1, 10000):
+#     action = select_policy(state)
+#     state, reward, done, _, _ = env.step(action)
+#     env.render()
+#     policy.rewards.append(reward)
+#     ep_reward += reward
+#     if done:
+#         break
