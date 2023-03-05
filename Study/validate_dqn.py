@@ -53,15 +53,26 @@ def select_action(state):
             return policy_net(state).max(1)[1].view(1, 1)
     else:
         return torch.tensor([[env.action_space.sample()]],  dtype=torch.long)
+    
+while True:
+    state,_ = env.reset(seed = 543)
+    torch.manual_seed(seed = 543)
+    state = torch.from_numpy(state).float().unsqueeze(0)  
+    for t in count():
+        action = select_action(state)
+        next_state, reward, done, _, _ = env.step(action.item())
+        env.render()
+        if done:
+            break
 
-state,_ = env.reset()
-env.reset(seed = 543)
-torch.manual_seed(seed = 543)
-for t in range(1, 10000):
-    state = torch.from_numpy(state).float().unsqueeze(0)
-    action = select_action(state)
-    print(action)
-    state, reward, done, _, _ = env.step(action.item())
-    env.render()
-    if done:
-        break
+# state,_ = env.reset()
+# env.reset(seed = 543)
+# torch.manual_seed(seed = 543)
+# for t in range(1, 10000):
+#     state = torch.from_numpy(state).float().unsqueeze(0)
+#     action = select_action(state)
+#     print(action)
+#     state, reward, done, _, _ = env.step(action.item())
+#     env.render()
+#     if done:
+#         break
